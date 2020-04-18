@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { isLocalhost } from '../serviceWorker';
 
 export default class AdminBooks extends Component {
 
@@ -33,7 +34,9 @@ export default class AdminBooks extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:5000/books/')
+
+        const booksPath = isLocalhost ? 'http://localhost:5000' : '';
+        axios.get(`${booksPath}/books/`)
             .then(response => {
                 if (response.data.length > 0) {
                     this.setState({
@@ -125,7 +128,8 @@ export default class AdminBooks extends Component {
 
         console.log(book);
 
-        await axios.post('http://localhost:5000/books/add', book)
+        const booksPath = isLocalhost ? 'http://localhost:5000' : '';
+        await axios.post(`${booksPath}/books/add`, book)
             .then(res => console.log(res.data));
 
         window.location = '/';

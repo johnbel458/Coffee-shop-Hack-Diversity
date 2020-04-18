@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { isLocalhost } from '../serviceWorker';
 
 const Book = props => (
     <tr>
@@ -26,7 +27,8 @@ export default class BooksList extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:5000/books/')
+        const booksPath = isLocalhost ? 'http://localhost:5000' : '';
+        axios.get(`${booksPath}/books/`)
             .then(response => {
                 this.setState({ books: response.data })
             })

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { isLocalhost } from '../serviceWorker';
 
 export default class BooksInfo extends Component {
     constructor(props) {
@@ -25,7 +26,8 @@ export default class BooksInfo extends Component {
 
 
     componentDidMount() {
-        axios.get('http://localhost:5000/books/' + this.props.match.params.id)
+        const booksPath = isLocalhost ? 'http://localhost:5000' : '';
+        axios.get(`${booksPath}/books/` + this.props.match.params.id)
             .then(response => {
                 this.setState({
                     isbn: response.data.isbn,
@@ -73,7 +75,8 @@ export default class BooksInfo extends Component {
 
             console.log(book);
 
-            await axios.post('http://localhost:5000/books/update/' + this.props.match.params.id, book)
+            const booksPath = isLocalhost ? 'http://localhost:5000' : '';
+            await axios.post(`${booksPath}/books/update/` + this.props.match.params.id, book)
                 .then(res => console.log(res.data));
 
             window.location.reload(true);
@@ -103,7 +106,8 @@ export default class BooksInfo extends Component {
 
             console.log(book);
 
-            await axios.post('http://localhost:5000/books/update/' + this.props.match.params.id, book)
+            const booksPath = isLocalhost ? 'http://localhost:5000' : '';
+            await axios.post(`${booksPath}/books/update/` + this.props.match.params.id, book)
                 .then(res => console.log(res.data));
 
             window.location.reload(true);
